@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
-import Logo from "../assets/Jamuna_Sense_Logo.png";
+import Logo from "../../assets/Jamuna_Sense_Logo.png";
+import ReportButton from "../ReportButton";
 
 const Navbar = () => {
 
@@ -21,6 +22,9 @@ const Navbar = () => {
           <Link to="/impact">Impact</Link>
         </li>
       </ul>
+          <Link to="/reportForm">
+            <ReportButton />
+          </Link>
     </nav>
   );
 };

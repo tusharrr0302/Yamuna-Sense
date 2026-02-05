@@ -1,7 +1,6 @@
 
 
 import "./Hero.css";
-import OceanImg from "../assets/waves.jpeg";
 
 const Hero = () => {
   return (

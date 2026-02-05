@@ -49,14 +49,67 @@
   background: #f8fafc;
 }
 
+/* Hide zoom controls */
+.leaflet-control-zoom {
+  display: none;
+}
+
+/* Prevent cursor zoom indication */
+.leaflet-container {
+  cursor: grab;
+}
+
+.leaflet-container:active {
+  cursor: grabbing;
+}
+
+/* River-like styling with flowing effect */
+.leaflet-interactive {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+  transition: all 0.3s ease;
+}
+
+/* Enhanced river path styling */
+.leaflet-pane .leaflet-overlay-pane svg path[stroke] {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: all 0.3s ease;
+}
+
+/* Add water-like glow to river segments based on color */
+.leaflet-pane .leaflet-overlay-pane svg path[stroke="#22c55e"] {
+  filter: drop-shadow(0 0 4px rgba(34, 197, 94, 0.4)) 
+          drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.leaflet-pane .leaflet-overlay-pane svg path[stroke="#eab308"] {
+  filter: drop-shadow(0 0 4px rgba(234, 179, 8, 0.4)) 
+          drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.leaflet-pane .leaflet-overlay-pane svg path[stroke="#ef4444"] {
+  filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.4)) 
+          drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Shadow/outline effect */
+.leaflet-pane .leaflet-overlay-pane svg path[stroke="#1e293b"] {
+  filter: blur(1px);
+  opacity: 0.2;
+}
+
 /* Station Markers Animation */
 .station-marker {
   transition: all 0.3s ease;
   cursor: pointer;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .station-marker:hover {
   transform: scale(1.2);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 /* Popup Styling */
@@ -170,10 +223,27 @@
 }
 
 .legend-color {
-  width: 24px;
-  height: 4px;
-  border-radius: 2px;
+  width: 32px;
+  height: 6px;
+  border-radius: 3px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Add flowing effect to legend items */
+.legend-item:nth-child(1) .legend-color {
+  background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
+}
+
+.legend-item:nth-child(2) .legend-color {
+  background: linear-gradient(90deg, #eab308 0%, #ca8a04 100%);
+  box-shadow: 0 0 8px rgba(234, 179, 8, 0.3);
+}
+
+.legend-item:nth-child(3) .legend-color {
+  background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
 }
 
 .legend-label {
@@ -238,6 +308,18 @@
   height: 14px;
   border-radius: 50%;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  animation: pulseIndicator 2s ease-in-out infinite;
+}
+
+@keyframes pulseIndicator {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.9;
+  }
 }
 
 .pollution-text {
@@ -331,6 +413,36 @@
   font-size: 0.85rem;
   color: #64748b;
   font-style: italic;
+}
+
+/* Animations */
+@keyframes shimmer {
+  0%, 100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.4)) 
+            drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.6)) 
+            drop-shadow(0 1px 3px rgba(0, 0, 0, 0.25));
+  }
+}
+
+@keyframes riverFlow {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
 }
 
 /* Responsive Design */
@@ -443,14 +555,4 @@
 
 .leaflet-popup-tip {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Smooth animations for polylines */
-@keyframes riverFlow {
-  0% {
-    stroke-dashoffset: 1000;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
 }

@@ -1,8 +1,8 @@
-import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
-import MapSection from "../components/YamunaMap";
-import ReportsSection from "../components/ReportSection";
-import YamunaMap from '../components/YamunaMap';
+import Navbar from "../components/Home/Navbar";
+import Hero from "../components/Home/Hero";
+import MapSection from "../components/Home/YamunaMap";
+import ReportsSection from "../components/Home/ReportSection";
+import YamunaMap from '../components/Home/YamunaMap';
 import "./Home.css";
 
 const Home = () => {
@@ -14,9 +14,9 @@ const Home = () => {
       {/* CONTENT ON TOP */}
       <div className="home-content">
         <Hero />
-        <YamunaMap />
         <div className="content">
           {/* <MapSection /> */}
+          <YamunaMap />
           <ReportsSection />
         </div>
       </div>

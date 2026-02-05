@@ -162,7 +162,8 @@ const MapBounds = () => {
   const map = useMap();
 
   React.useEffect(() => {
-    map.fitBounds(yamunaRiverPath, { padding: [80, 80] });
+    // Fit bounds to show entire river with minimal padding for closer view
+    map.fitBounds(yamunaRiverPath, { padding: [30, 30] });
   }, [map]);
 
   return null;
@@ -186,8 +187,12 @@ const YamunaMap = () => {
         <div className="map-wrapper">
           <MapContainer
             center={[28.6139, 77.209]}
-            zoom={6}
-            scrollWheelZoom={true}
+            zoom={7}
+            scrollWheelZoom={false}
+            zoomControl={true}
+            dragging={true}
+            doubleClickZoom={false}
+            touchZoom={true}
             className="leaflet-map"
           >
             {/* Minimal base map - light gray style */}
@@ -198,7 +203,19 @@ const YamunaMap = () => {
 
             <MapBounds />
 
-            {/* Draw the Yamuna River path with gradient effect */}
+            {/* Draw shadow/outline first for depth effect */}
+            <Polyline
+              positions={yamunaRiverPath}
+              pathOptions={{
+                color: "#1e293b",
+                weight: 10,
+                opacity: 0.15,
+                lineJoin: "round",
+                lineCap: "round",
+              }}
+            />
+
+            {/* Draw the Yamuna River path with realistic river styling */}
             {yamunaRiverPath.map((position, index) => {
               if (index === yamunaRiverPath.length - 1) return null;
 
@@ -211,8 +228,8 @@ const YamunaMap = () => {
                   ]}
                   pathOptions={{
                     color: getRiverSegmentColor(index),
-                    weight: 6,
-                    opacity: 0.8,
+                    weight: 8,
+                    opacity: 0.9,
                     lineJoin: "round",
                     lineCap: "round",
                   }}
@@ -220,17 +237,32 @@ const YamunaMap = () => {
               );
             })}
 
-            {/* Add a subtle shadow/outline for depth */}
-            <Polyline
-              positions={yamunaRiverPath}
-              pathOptions={{
-                color: "#1e293b",
-                weight: 8,
-                opacity: 0.15,
-                lineJoin: "round",
-                lineCap: "round",
-              }}
-            />
+            {/* Add a lighter inner line for water effect */}
+            {yamunaRiverPath.map((position, index) => {
+              if (index === yamunaRiverPath.length - 1) return null;
+
+              const color = getRiverSegmentColor(index);
+              const lighterColor = color === "#22c55e" ? "#34d399" : 
+                                   color === "#eab308" ? "#fbbf24" : 
+                                   "#f87171";
+
+              return (
+                <Polyline
+                  key={`inner-${index}`}
+                  positions={[
+                    yamunaRiverPath[index],
+                    yamunaRiverPath[index + 1],
+                  ]}
+                  pathOptions={{
+                    color: lighterColor,
+                    weight: 4,
+                    opacity: 0.6,
+                    lineJoin: "round",
+                    lineCap: "round",
+                  }}
+                />
+              );
+            })}
 
             {/* Pollution monitoring stations */}
             {yamunaStations.map((station) => (
@@ -241,7 +273,7 @@ const YamunaMap = () => {
                 pathOptions={{
                   color: "#fff",
                   fillColor: getPollutionColor(station.pollutionLevel),
-                  fillOpacity: 0.9,
+                  fillOpacity: 0.95,
                   weight: 3,
                   className: "station-marker",
                 }}
