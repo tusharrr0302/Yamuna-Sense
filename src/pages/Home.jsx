@@ -1,6 +1,5 @@
 import Navbar from "../components/Home/Navbar";
 import Hero from "../components/Home/Hero";
-import MapSection from "../components/Home/YamunaMap";
 import ReportsSection from "../components/Home/ReportSection";
 import YamunaMap from '../components/Home/YamunaMap';
 import "./Home.css";
@@ -15,7 +14,6 @@ const Home = () => {
       <div className="home-content">
         <Hero />
         <div className="content">
-          {/* <MapSection /> */}
           <YamunaMap />
           <ReportsSection />
         </div>
